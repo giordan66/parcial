@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreePlay - Galería de Juegos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1b2838;
+        color: #c7d5e0;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      header {
+        background-color: #171a21;
+        padding: 10px 0;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        margin: 0;
+        flex: 1;
+        justify-content: center;
+      }
+      nav ul:first-child {
+        justify-content: flex-start;
+      }
+      nav ul:last-child {
+        justify-content: flex-end;
+      }
+      nav ul li {
+        margin: 0 10px;
+      }
+      nav ul li a {
+        color: #c7d5e0;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .filters {
+        text-align: center;
+        margin: 20px 0;
+      }
+      #category-filter {
+        padding: 5px;
+        font-size: 16px;
+      }
+      .game-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .game-card {
+        background-color: #2a475e;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+      }
+      .game-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      .game-info {
+        padding: 10px;
+      }
+      .game-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .game-description {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      .game-genre {
+        font-style: italic;
+        color: #66c0f4;
+      }
+      .favorite {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #ffd700;
+        cursor: pointer;
+      }
+      .favorite-button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+        </ul>
+        <ul>
+          <li><a href="gallery.html">Galería de Juegos</a></li>
+        </ul>
+        <ul>
+          <li>
+            <a href="register.html">Registro de Desarrolladores</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      <div class="filters">
+        <select id="category-filter" onchange="filterGames()">
+          <option value="">Todos los Géneros</option>
+          <option value="accion">Accion</option>
+          <option value="aventura">Aventura</option>
+          <option value="gratuito">gratis para jugar</option>
+          <option value="deporte">Deporte</option>
+        </select>
+      </div>
+      <div class="game-list" id="gameList"></div>
+    </main>
+
+    <script>
+      const games = [
+        {
+          title: "eFootball™",
+          description:
+            "¡El frenético juego de fútbol con un total mundial de 750 millones de descargas te está esperando!",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1665460/header.jpg?t=1726123478",
+          genre: "deporte",
+        },
+        {
+          title: "EA SPORTS FC™ 25",
+          description:
+            "Experimenta el fútbol como nunca antes en esta nueva entrega.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2669320/header.jpg?t=1727470248",
+          genre: "deporte",
+        },
+        {
+          title: "Circuit Superstars",
+          description:
+            "Circuit Superstars es un juego de desplazamiento vertical creado por y para los amantes del mundo motor. ",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1097130/header.jpg?t=1700585312",
+          genre: "deporte",
+        },
+        {
+          title: "Soccer Online: Ball 3D",
+          description:
+            "Juega con tus amigos un juego multijugador de fútbol online con una jugabilidad basada al 100% en la física donde controlás a un jugador.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/485610/header.jpg?t=1727991247",
+          genre: "deporte",
+        },
+        {
+          title: "Pickleball Smash",
+          description:
+            " Prepárate para servir, golpear y aplastar para llegar a la victoria en el emocionante mundo de Pickleball Smash",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2343740/header.jpg?t=1702995253",
+          genre: "deporte",
+        },
+        {
+          title: "Project CARS 3: Paquete de Potencia",
+          description:
+            "Es hora de verdadera acción lateral con 4 vehículos japoneses épicos empapados de tradición, legado y diversión pura de punta a punta.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1354052/header.jpg?t=1620125554",
+          genre: "deporte",
+        },
+        {
+          title: "Temtem",
+          description:
+            "Temtem es una aventura en línea basada en coleccionar criaturas",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/745920/header.jpg?t=1726037681",
+          genre: "aventura",
+        },
+        {
+          title: "Epic Battle Fantasy 5",
+          description:
+            "Una aventura RPG por turnos, llena de referencias a videojuegos, diálogo juvenil, anime y mucho fanservice",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/432350/header.jpg?t=1720824507",
+          genre: "aventura",
+        },
+        {
+          title: "Don't Starve Together",
+          description:
+            "Lucha, cultiva, construye y explora juntos en la expansión multijugador independiente del intransigente juego de supervivencia en la naturaleza, Don't Starve.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322330/header_alt_assets_46.jpg?t=1726163258",
+          genre: "aventura",
+        },
+        {
+          title: "Crosshair X",
+          description:
+            "Sobreponga miras personalizadas en cada juego que juegues.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1366800/header.jpg?t=1708541143",
+          genre: "aventura",
+        },
+        {
+          title: "Once Human",
+          description:
+            "Once Human es un juego de supervivencia multijugador de mundo abierto ambientado en un extraño futuro postapocalíptico",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2139460/header.jpg?t=1727331975",
+          genre: "aventura",
+        },
+        {
+          title: "Monster Hunter: World",
+          description:
+            "¡Bienvenidos a un nuevo mundo! En Monster Hunter: World, la última entrega de la serie, podrás disfrutar de la mejor experiencia de juego, ",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/header.jpg?t=1711328912",
+          genre: "aventura",
+        },
+        {
+          title: "Rust",
+          description:
+            "El único objetivo en Rust es sobrevivir. Todo quiere que mueras: la fauna de la isla y otros habitantes.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252490/header.jpg?t=1727957298",
+          genre: "aventura",
+        },
+        {
+          title: "Dota 2",
+          description:
+            "Cada día, millones de jugadores de todo el mundo entran en batalla como uno de los más de cien héroes de Dota",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg?t=1727827653",
+          genre: "accion",
+        },
+        {
+          title: "Counter-Strike 2",
+          description:
+            "Durante más de dos décadas, Counter-Strike ha brindado una experiencia competitiva de élite",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg?t=1719426374",
+          genre: "accion",
+        },
+        {
+          title: "PUBG: BATTLEGROUNDS",
+          description:
+            "Aterriza en ubicaciones estratégicas, saquea armas y suministros",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578080/header.jpg?t=1727947409",
+          genre: "accion",
+        },
+        {
+          title: "THE FINALS",
+          description:
+            " Lucha codo con codo con tus compañeros en arenas virtuales que puedes modificar, aprovechar e incluso destruir.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2073850/header.jpg?t=1727450301",
+          genre: "accion",
+        },
+        {
+          title: "The Forever Winter",
+          description:
+            "es un shooter cooperativo de terror y supervivencia táctico en el que tú y tu escuadrón debéis saquear a los muertos para sobrevivir bajo la sombra de aterradoras ",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2828860/header.jpg?t=1727326607",
+          genre: "accion",
+        },
+        {
+          title: "Space Marine 2",
+          description:
+            "Encarna la habilidad y la brutalidad sobrehumanas de un marine espacial.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2183900/header.jpg?t=1727980636",
+          genre: "accion",
+        },
+        {
+          title: "Black Myth: Wukong",
+          description:
+            "Black Myth: Wukong es un RPG de acción inspirado en la mitología china. Emprenderás la travesía como el Destinado",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg?t=1725007201",
+          genre: "accion",
+        },
+        {
+          title: "Team Fortress 2",
+          description:
+            "Nueve clases distintas proporcionan una amplia gama de habilidades tácticas y personalidades. ",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/440/header.jpg?t=1721932689",
+          genre: "gratutito",
+        },
+        {
+          title: "Overwatch® 2",
+          description:
+            "es un juego de disparos por equipos, reconocido ampliamente por la crítica, que se desarrolla en un futuro optimista con una creciente alineación de héroes",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/header.jpg?t=1727296520",
+          genre: "gratuito",
+        },
+        {
+          title: "War Thunder",
+          description:
+            " gratuito y multiplataforma más completo del mercado que se enfoca en las aeronaves, vehículos y buques blindados del siglo XX y las unidades de combate modernas más avanzadas.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/236390/header.jpg?t=1726558105",
+          genre: "gratuito",
+        },
+        {
+          title: "VRChat",
+          description: "Crea mundos y avatares personalizados. ",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/438100/header.jpg?t=1716410593",
+          genre: "gratuito",
+        },
+        {
+          title: "RuneScape",
+          description:
+            "Explora un mundo vivo en constante cambio y evolución donde te esperan nuevos desafíos, habilidades y misiones.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1343400/header.jpg?t=1702553711",
+          genre: "gratuito",
+        },
+        {
+          title: "The Sims™ 4",
+          description:
+            "Disfruta el poder de crear y controlar a la gente en un mundo virtual en el que no hay reglas.",
+          img: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222670/header.jpg?t=1727975092",
+          genre: "gratuito",
+        },
+      ];
+
+      function createGameCard(game) {
+        return `
+          <div class="game-card" data-genre="${game.genre}">
+            <img src="${game.img}" alt="${game.title}" />
+            <div class="favorite">☆</div>
+            <div class="game-info">
+              <div class="game-title">${game.title}</div>
+              <div class="game-description">${game.description}</div>
+              <div class="game-genre">Género: ${game.genre}</div>
+              <button class="favorite-button" onclick="toggleFavorite(this)">Favorito</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderGames() {
+        const gameList = document.getElementById("gameList");
+        gameList.innerHTML = games.map(createGameCard).join("");
+      }
+
+      function filterGames() {
+        const selectedGenre = document.getElementById("category-filter").value;
+        const gameCards = document.querySelectorAll(".game-card");
+
+        gameCards.forEach((card) => {
+          if (selectedGenre === "" || card.dataset.genre === selectedGenre) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
+      function toggleFavorite(button) {
+        const star = button.closest(".game-card").querySelector(".favorite");
+        if (star.textContent === "☆") {
+          star.textContent = "★";
+          button.textContent = "Quitar Favorito";
+        } else {
+          star.textContent = "☆";
+          button.textContent = "Favorito";
+        }
+      }
+
+      renderGames();
+    </script>
+  </body>
+</html>

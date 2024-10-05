@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreePlay Haven - La nueva tienda de juegos gratuitos</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #1b2838;
+        color: #c7d5e0;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      header {
+        background-color: #171a21;
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+      }
+      nav ul li {
+        margin-right: 20px;
+      }
+      nav ul li a {
+        color: #c7d5e0;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      nav ul li a:hover {
+        color: #66c0f4;
+      }
+      .hero {
+        background-image: url("/api/placeholder/1200/400");
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(27, 40, 56, 0.8),
+          rgba(27, 40, 56, 0.4)
+        );
+      }
+      .hero-content {
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 30px;
+        border-radius: 15px;
+        position: relative;
+        z-index: 1;
+        animation: fadeIn 1s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero-content h1 {
+        font-size: 3em;
+        margin-bottom: 15px;
+        color: #66c0f4;
+      }
+      .cta-button {
+        background-color: #66c0f4;
+        color: #fff;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      .cta-button:hover {
+        background-color: #1999ff;
+        transform: scale(1.05);
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+      }
+      .feature {
+        background-color: #2a475e;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .feature:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+      .feature h3 {
+        color: #66c0f4;
+        font-size: 1.5em;
+        margin-bottom: 15px;
+      }
+      .feature-icon {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: #66c0f4;
+      }
+      .game-container {
+        position: relative;
+        margin: 60px auto;
+        width: 400px;
+      }
+      #gameCanvas {
+        border: 5px solid #ffd700;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      }
+      #gameOver {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        border-radius: 15px;
+        font-size: 24px;
+      }
+      #score-display {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        color: #ffd700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+        }
+        nav ul li {
+          margin-bottom: 10px;
+        }
+        .hero {
+          height: 400px;
+        }
+        .hero-content h1 {
+          font-size: 2em;
+        }
+        .game-container {
+          width: 90%;
+        }
+        #gameCanvas {
+          width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="gallery.html">Galería de Juegos</a></li>
+            <li>
+              <a href="register.html">Registro de Desarrolladores</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Bienvenido a FreePlay Haven</h1>
+          <p>La nueva plataforma para juegos gratuitos sin restricciones</p>
+          <a href="gallery.html" class="cta-button">Explora la Galería</a>
+        </div>
+      </section>
+      <div class="container">
+        <div class="game-container">
+          <h2>¡Juega Snake ahora mismo!</h2>
+          <canvas id="gameCanvas" width="400" height="400"></canvas>
+          <div id="score-display">
+            Puntuación: <span id="current-score">0</span>
+          </div>
+          <div id="gameOver">
+            <h2>Game Over</h2>
+            <p>Tu puntuación final: <span id="score"></span></p>
+            <button onclick="resetGame()">Reiniciar</button>
+          </div>
+        </div>
+        <section class="features">
+          <div class="feature">
+            <i class="fas fa-money-bill-wave feature-icon"></i>
+            <h3>100% Gratuito</h3>
+            <p>Sin costos ocultos para jugadores ni desarrolladores</p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-unlock feature-icon"></i>
+            <h3>Sin Restricciones</h3>
+            <p>Publicación gratuita para todos los desarrolladores</p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-users feature-icon"></i>
+            <h3>Comunidad Activa</h3>
+            <p>Conecta con jugadores y creadores de todo el mundo</p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-play-circle feature-icon"></i>
+            <h3>Juega al Instante</h3>
+            <p>
+              Muchos juegos disponibles para jugar directamente en el navegador
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script>
+      // Snake game script
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const gameOverEl = document.getElementById("gameOver");
+      const scoreEl = document.getElementById("score");
+      const currentScoreEl = document.getElementById("current-score");
+
+      const gridSize = 20;
+      const tileCount = canvas.width / gridSize;
+      let snake = [{ x: 10, y: 10 }];
+      let food = { x: 15, y: 15 };
+      let dx = 0;
+      let dy = 0;
+      let score = 0;
+      let gameLoop;
+
+      function drawGame() {
+        clearCanvas();
+        moveSnake();
+        drawSnake();
+        drawFood();
+        checkCollision();
+        updateScore();
+      }
+
+      function clearCanvas() {
+        ctx.fillStyle = "#E0FFFF";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function drawSnake() {
+        ctx.fillStyle = "#32CD32";
+        snake.forEach((segment, index) => {
+          ctx.fillRect(
+            segment.x * gridSize,
+            segment.y * gridSize,
+            gridSize - 2,
+            gridSize - 2
+          );
+          if (index === 0) {
+            ctx.fillStyle = "black";
+            ctx.fillRect(
+              segment.x * gridSize + 3,
+              segment.y * gridSize + 3,
+              4,
+              4
+            );
+            ctx.fillRect(
+              segment.x * gridSize + 13,
+              segment.y * gridSize + 3,
+              4,
+              4
+            );
+          }
+        });
+      }
+
+      function drawFood() {
+        ctx.fillStyle = "#FF6347";
+        ctx.beginPath();
+        ctx.arc(
+          food.x * gridSize + gridSize / 2,
+          food.y * gridSize + gridSize / 2,
+          gridSize / 2 - 2,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
+      }
+
+      function moveSnake() {
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+        snake.unshift(head);
+        if (head.x === food.x && head.y === food.y) {
+          score++;
+          generateFood();
+        } else {
+          snake.pop();
+        }
+      }
+
+      function generateFood() {
+        food.x = Math.floor(Math.random() * tileCount);
+        food.y = Math.floor(Math.random() * tileCount);
+      }
+
+      function checkCollision() {
+        if (
+          snake[0].x < 0 ||
+          snake[0].x >= tileCount ||
+          snake[0].y < 0 ||
+          snake[0].y >= tileCount
+        ) {
+          gameOver();
+        }
+        for (let i = 1; i < snake.length; i++) {
+          if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+            gameOver();
+          }
+        }
+      }
+
+      function updateScore() {
+        currentScoreEl.textContent = score;
+      }
+
+      function gameOver() {
+        clearInterval(gameLoop);
+        gameOverEl.style.display = "block";
+        scoreEl.textContent = score;
+      }
+
+      function resetGame() {
+        snake = [{ x: 10, y: 10 }];
+        food = { x: 15, y: 15 };
+        dx = 0;
+        dy = 0;
+        score = 0;
+        gameOverEl.style.display = "none";
+        updateScore();
+        gameLoop = setInterval(drawGame, 100);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        switch (e.key) {
+          case "ArrowUp":
+            if (dy === 0) {
+              dx = 0;
+              dy = -1;
+            }
+            break;
+          case "ArrowDown":
+            if (dy === 0) {
+              dx = 0;
+              dy = 1;
+            }
+            break;
+          case "ArrowLeft":
+            if (dx === 0) {
+              dx = -1;
+              dy = 0;
+            }
+            break;
+          case "ArrowRight":
+            if (dx === 0) {
+              dx = 1;
+              dy = 0;
+            }
+            break;
+        }
+      });
+
+      resetGame();
+    </script>
+  </body>
+</html>
